@@ -1,0 +1,10 @@
+services:
+  kiro-cli:
+    build: .
+    image: kiro-cli:latest
+    env_file:
+      - .env
+    volumes:
+      - /home/kiro-cli/.kiro:/home/kiro-cli/.kiro
+    stdin_open: true
+    tty: true
