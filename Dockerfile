@@ -4,10 +4,10 @@ RUN apt-get update && apt-get install -y \
     curl unzip git ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-RUN useradd -m -d /home/kiro-cli -s /bin/bash kiro-cli
+RUN useradd -m -d /home/kiro -s /bin/bash kiro
 
-USER kiro-cli
-WORKDIR /home/kiro-cli
+USER kiro
+WORKDIR /home/kiro
 
 RUN ARCH=$(uname -m) && \
     if [ "$ARCH" = "x86_64" ]; then \
@@ -22,8 +22,6 @@ RUN ARCH=$(uname -m) && \
     /tmp/kirocli/install.sh --no-confirm && \
     rm -rf /tmp/kirocli*
 
-ENV PATH="/home/kiro-cli/.local/bin:$PATH"
-
-COPY --chown=kiro-cli:kiro-cli config/ /home/kiro-cli/.kiro/
+ENV PATH="/home/kiro/.local/bin:$PATH"
 
 CMD ["bash"]

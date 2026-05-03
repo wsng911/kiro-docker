@@ -1,10 +1,10 @@
 services:
   kiro-cli:
-    build: .
-    image: kiro-cli:latest
+    image: wsng911/kiro-cli:latest
     env_file:
       - .env
     volumes:
-      - /home/kiro-cli/.kiro:/home/kiro-cli/.kiro
+      - /home/kiro:/home/kiro
+    working_dir: /home/kiro
     stdin_open: true
     tty: true
