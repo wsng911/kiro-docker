@@ -5,6 +5,8 @@ services:
       - .env
     volumes:
       - /home/kiro:/home/kiro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/kiro/projects:/workspace
     working_dir: /home/kiro
     stdin_open: true
     tty: true
