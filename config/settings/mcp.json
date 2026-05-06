@@ -1,8 +1,8 @@
 {
   "mcpServers": {
     "github": {
-      "command": "mcp-server-github",
-      "args": ["--stdio"],
+      "command": "github-mcp-server",
+      "args": ["stdio"],
       "env": {
         "GITHUB_TOKEN": "$GITHUB_TOKEN"
       }

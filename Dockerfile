@@ -9,25 +9,35 @@ RUN apt-get update && apt-get install -y \
     && apt-get update && apt-get install -y docker-ce-cli docker-buildx-plugin \
     && rm -rf /var/lib/apt/lists/*
 
-RUN useradd -m -d /home/kiro -s /bin/bash kiro \
-    && groupadd -f docker \
-    && usermod -aG docker kiro
+RUN useradd -m -d /home/kiro -s /bin/bash -u 1000 kiro
 
 USER kiro
 WORKDIR /home/kiro
 
+# 安装 kiro-cli
 RUN ARCH=$(uname -m) && \
-    if [ "$ARCH" = "x86_64" ]; then \
-      URL="https://desktop-release.q.us-east-1.amazonaws.com/latest/kirocli-x86_64-linux.zip"; \
-    elif [ "$ARCH" = "aarch64" ]; then \
-      URL="https://desktop-release.q.us-east-1.amazonaws.com/latest/kirocli-aarch64-linux.zip"; \
-    else \
-      echo "Unsupported arch: $ARCH" && exit 1; \
-    fi && \
-    curl --proto '=https' --tlsv1.2 -sSf "$URL" -o /tmp/kirocli.zip && \
+    if [ "$ARCH" = "x86_64" ]; then ARCH_NAME="x86_64"; \
+    elif [ "$ARCH" = "aarch64" ]; then ARCH_NAME="aarch64"; \
+    else echo "Unsupported arch: $ARCH" && exit 1; fi && \
+    curl --proto '=https' --tlsv1.2 -sSf \
+      "https://desktop-release.q.us-east-1.amazonaws.com/latest/kirocli-${ARCH_NAME}-linux.zip" \
+      -o /tmp/kirocli.zip && \
     unzip /tmp/kirocli.zip -d /tmp && \
     /tmp/kirocli/install.sh --no-confirm && \
     rm -rf /tmp/kirocli*
 
+# 安装 github-mcp-server
+RUN ARCH=$(uname -m) && \
+    if [ "$ARCH" = "x86_64" ]; then ARCH_NAME="x86_64"; \
+    elif [ "$ARCH" = "aarch64" ]; then ARCH_NAME="arm64"; \
+    else echo "Unsupported arch: $ARCH" && exit 1; fi && \
+    curl -fsSL \
+      "https://github.com/github/github-mcp-server/releases/latest/download/github-mcp-server_Linux_${ARCH_NAME}.tar.gz" \
+      | tar -xz -C /home/kiro/.local/bin github-mcp-server
+
+COPY --chown=kiro:kiro config/settings/ /home/kiro/.kiro/settings/
+
 ENV PATH="/home/kiro/.local/bin:$PATH"
+ENV XDG_RUNTIME_DIR="/home/kiro/.local/run"
+
 CMD ["bash"]
