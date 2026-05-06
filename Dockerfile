@@ -52,4 +52,4 @@ ENV SHELL="/bin/bash"
 
 USER root
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["su", "-", "kiro", "-c", "bash"]
+CMD ["su", "-s", "/bin/bash", "kiro"]
