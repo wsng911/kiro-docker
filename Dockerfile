@@ -12,7 +12,8 @@ RUN apt-get update && apt-get install -y \
     && apt-get update && apt-get install -y docker-ce-cli docker-buildx-plugin gh \
     && rm -rf /var/lib/apt/lists/*
 
-RUN useradd -m -d /home/kiro -s /bin/bash -u 1000 kiro
+RUN useradd -m -d /home/kiro -s /bin/bash -u 1000 kiro \
+    && usermod -aG tty kiro
 
 USER kiro
 WORKDIR /home/kiro
