@@ -1,7 +1,7 @@
 FROM debian:12-slim
 
 RUN apt-get update && apt-get install -y \
-    curl unzip git ca-certificates \
+    curl unzip git ca-certificates gosu \
     && install -m 0755 -d /etc/apt/keyrings \
     && curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable" \
@@ -52,4 +52,3 @@ ENV SHELL="/bin/bash"
 
 USER root
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["su", "-s", "/bin/bash", "kiro"]
