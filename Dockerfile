@@ -15,6 +15,9 @@ RUN apt-get update && apt-get install -y \
 RUN useradd -m -d /home/kiro -s /bin/bash -u 1000 kiro \
     && usermod -aG tty kiro
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 USER kiro
 WORKDIR /home/kiro
 RUN mkdir -p /home/kiro/.local/bin /home/kiro/.local/run /home/kiro/.kiro/settings
@@ -45,5 +48,8 @@ COPY --chown=kiro:kiro config/settings/ /home/kiro/.kiro/settings/
 
 ENV PATH="/home/kiro/.local/bin:$PATH"
 ENV XDG_RUNTIME_DIR="/home/kiro/.local/run"
+ENV SHELL="/bin/bash"
 
-CMD ["bash"]
+USER root
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["su", "-", "kiro", "-c", "bash"]
