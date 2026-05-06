@@ -22,14 +22,13 @@ USER kiro
 WORKDIR /home/kiro
 RUN mkdir -p /home/kiro/.local/bin /home/kiro/.local/run /home/kiro/.kiro/settings
 
-# 安装 kiro-cli 2.2.0（2.2.1 存在容器内 TUI 渲染 bug）
-ARG KIRO_VERSION=2.2.0
+# 安装 kiro-cli
 RUN ARCH=$(uname -m) && \
     if [ "$ARCH" = "x86_64" ]; then ARCH_NAME="x86_64"; \
     elif [ "$ARCH" = "aarch64" ]; then ARCH_NAME="aarch64"; \
     else echo "Unsupported arch: $ARCH" && exit 1; fi && \
     curl --proto '=https' --tlsv1.2 -sSf \
-      "https://desktop-release.q.us-east-1.amazonaws.com/${KIRO_VERSION}/kirocli-${ARCH_NAME}-linux.zip" \
+      "https://desktop-release.q.us-east-1.amazonaws.com/latest/kirocli-${ARCH_NAME}-linux.zip" \
       -o /tmp/kirocli.zip && \
     unzip /tmp/kirocli.zip -d /tmp && \
     /tmp/kirocli/install.sh --no-confirm && \

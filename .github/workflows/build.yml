@@ -30,4 +30,4 @@ jobs:
           push: true
           tags: |
             wsng911/kiro-cli:latest
-            wsng911/kiro-cli:v2.2.0
+            wsng911/kiro-cli:v2.2.1
