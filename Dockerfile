@@ -13,6 +13,7 @@ RUN useradd -m -d /home/kiro -s /bin/bash -u 1000 kiro
 
 USER kiro
 WORKDIR /home/kiro
+RUN mkdir -p /home/kiro/.local/bin /home/kiro/.local/run /home/kiro/.kiro/settings
 
 # 安装 kiro-cli
 RUN ARCH=$(uname -m) && \
